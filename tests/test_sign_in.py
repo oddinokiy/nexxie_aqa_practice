@@ -4,7 +4,7 @@ from playwright.sync_api import Playwright
 # и может написать сообщение и отправить ему
 
 def test_already_reg(playwright: Playwright):
-    browser = playwright.chromium.launch(headless=False)
+    browser = playwright.chromium.launch(headless=False, slow_mo=500)
     context = browser.new_context()
     page = context.new_page()
     page.goto("https://dashboard4.nx-sandbox.com/")
@@ -16,6 +16,10 @@ def test_already_reg(playwright: Playwright):
     page.locator("form[name=\"formHolder.loginForm\"]").get_by_role("button", name="Sign In").click()
     page.get_by_text("Chat", exact=True).click()
     page.get_by_role("textbox", name="Your Message").click()
-    page.get_by_role("textbox", name="Your Message").fill("nah, i aint wanna")
+
+    # не вводится текст в чат почему то и он не отправляется
+
+    page.get_by_role("textbox", name="Your Message").fill("im busy right now")
+    # проблема в том что текст этот написал но он не отправился в чат, надо решить проблему что текст отправился в чат
     page.locator(".send-btn > .ng-isolate-scope > .icon > use").click()
 
