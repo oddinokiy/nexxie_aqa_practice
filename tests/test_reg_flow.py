@@ -11,11 +11,11 @@
 # разобрать код почему так и тд
 
 
-from playwright.sync_api import Playwright, expect
-import time
-import re
-
-
+# from playwright.sync_api import Playwright, expect
+# import time
+# import re
+#
+#
 # def test_user_reg(playwright: Playwright):
 #     browser = playwright.chromium.launch(headless=False, slow_mo=500)
 #     page = browser.new_page()
@@ -90,7 +90,7 @@ import re
 from playwright.sync_api import Playwright
 
 
-def run(playwright: Playwright):
+def test_user_reg(playwright: Playwright):
     browser = playwright.chromium.launch(headless=False)
     context = browser.new_context()
     page = context.new_page()
@@ -107,8 +107,7 @@ def run(playwright: Playwright):
     page.get_by_role("link", name="1", exact=True).click()
     page.get_by_text("YYYY").click()
     page.get_by_role("link", name="2005").click()
-
-#   page.get_by_role("link", name="Cambridge").click()
+    page.get_by_role("link", name="Cambridge").click()
 
     page.get_by_role("checkbox").check()
     page.locator("form[name=\"profileForm\"]").get_by_role("button", name="Register").click()
@@ -116,8 +115,8 @@ def run(playwright: Playwright):
     page.locator(".menu-item.active > .active > .icon > use").click()
     page.get_by_role("textbox", name="Your Message").fill("Hi, whats poppin?")
 
-    # я вот хз, я получается написал а отправить я не могу понять оно отправилось или нет
-    # там суть что просто надо будет создать новую почту и
+#     # я вот хз, я получается написал а отправить я не могу понять оно отправилось или нет
+#     # там суть что просто надо будет создать новую почту и
 
 
 
