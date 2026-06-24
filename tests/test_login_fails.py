@@ -1,4 +1,5 @@
 # Scenario 2: Login attempt after account deletion
+
 # 1. Create unverified user
 # 2. Delete account
 # 3. Try login with the same email and password
@@ -14,7 +15,7 @@ def test_login_fails_after_account_delete(playwright: Playwright):
     page = context.new_page()
 
     username = "userok12"
-    email = "tyisocxq4iyxb-yub@getairmail.com"  # Change email before each test run
+    email = "tyisocxq4iyxb-yey@blondmail.com"  # Change email before each test run
     password = "12121212"
     city = "London"
 
@@ -82,11 +83,8 @@ def test_login_fails_after_account_delete(playwright: Playwright):
     expect(email_field).to_have_value(email)
     expect(password_field).to_have_value(password)
 
-    page.locator("form[name='formHolder.loginForm']").get_by_role(
-        "button", name="Sign In"
-    ).click()
+    page.locator("form[name='formHolder.loginForm']").get_by_role("button", name="Sign In").click()
 
     # --- CHECK LOGIN FAILED ---
     expect(page.get_by_text("Username/password combination not found")).to_be_visible(timeout=10000)
 
-    browser.close()

@@ -14,16 +14,16 @@ def test_register_with_deleted_email(playwright: Playwright):
     context = browser.new_context()
     page = context.new_page()
 
-    username_first = f"userone{unique_id}"
-    second_username = f"usertwo{unique_id}"
-    email = f"deletedemail{unique_id}@getmule.com"
+    username_first = "user1"
+    username_second = "user2"
+    email = "tyisocxq4iyxb-gtew@robot-mail.com" # поменять имейл
     password = "12121212"
     city = "London"
 
     page.goto("https://dashboard4.nx-sandbox.com/")
 
     # --- CREATE FIRST USER ---
-    page.locator("#land-content-container input[name='username']").fill(first_username)
+    page.locator("#land-content-container input[name='username']").fill(username_first)
     page.locator("#land-content-container input[name='email']").fill(email)
     page.locator("input[name='password']").fill(password)
 
@@ -72,7 +72,7 @@ def test_register_with_deleted_email(playwright: Playwright):
     # --- REGISTER SECOND USER WITH SAME EMAIL ---
     page.goto("https://dashboard4.nx-sandbox.com/")
 
-    page.locator("#land-content-container input[name='username']").fill(second_username)
+    page.locator("#land-content-container input[name='username']").fill(username_second)
     page.locator("#land-content-container input[name='email']").fill(email)
     page.locator("input[name='password']").fill(password)
 
@@ -94,5 +94,3 @@ def test_register_with_deleted_email(playwright: Playwright):
 
     # --- CHECK REGISTRATION SUCCEEDED ---
     expect(page).to_have_url(re.compile(r".*/#/session/search"), timeout=25000)
-
-    browser.close()
