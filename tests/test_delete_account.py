@@ -4,6 +4,7 @@
 # 4. Delete account
 # 5. Check account is deleted
 
+# Scenario 1
 
 import re
 from playwright.sync_api import Playwright, expect
@@ -17,8 +18,6 @@ def test_user_reg(playwright: Playwright):
     email = "tyisocxq4iyxb-nik23@temptami.com" # каждый раз когда тестишь надо менять почту, чтобы работало
     password = "21212121"
     city = "London"
-
-    page.goto("https://dashboard4.nx-sandbox.com/")
 
     page.goto("https://dashboard4.nx-sandbox.com/")
 
