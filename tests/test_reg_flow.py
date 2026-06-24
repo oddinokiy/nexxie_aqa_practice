@@ -22,7 +22,7 @@ def test_user_reg(playwright: Playwright):
     email = "tyisocxq4iyxb-reye@getnada.com"  # Change email before each test run
     password = "21212121"
     city = "Cambridge"
-    message = "Hi, how are you?"
+    message = " "
 
     page.goto("https://dashboard4.nx-sandbox.com/")
 
@@ -74,8 +74,7 @@ def test_user_reg(playwright: Playwright):
     page.get_by_title("Browse").click()
     expect(page).to_have_url(re.compile(r".*/#/session/search"), timeout=15000)
 
-    # page.get_by_text("test123B", exact=False).click()
-    page.locator(".profile-details ng-scope").first.click()
+    page.locator(".profile-details").first.click()
     page.get_by_title("Chat").nth(1).click()
 
     # Send message
