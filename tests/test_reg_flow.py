@@ -17,13 +17,13 @@ from playwright.sync_api import Playwright, expect
 def test_user_reg(playwright: Playwright):
     browser = playwright.chromium.launch(headless=False, slow_mo=500)
     page = browser.new_page()
-    # --- Data ---
 
+    # --- Data ---
     username = "userok21"
-    email = "tyisocxq4iyxb-reye@getnada.com"  # Change email before each test run
+    email = "tyisocxq4iyxb-ret@getnada.com"  # Change email before each test run
     password = "21212121"
     city = "Cambridge"
-    message = " "
+    message = "Hi. How are you? "
 
     page.goto("https://dashboard4.nx-sandbox.com/")
 
