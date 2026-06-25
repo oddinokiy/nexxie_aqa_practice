@@ -1,4 +1,11 @@
-#Scenario 2
+# Scenario 3
+
+# 1. Register user
+# 2. Verify email manually
+# 3. Open chat with any user
+# 4. Leave message field empty
+# 5. Click Send
+# 6. Check empty message is not sent
 
 
 import re
@@ -10,7 +17,7 @@ def test_user_reg(playwright: Playwright):
     page = browser.new_page()
 
     username = "userok21"
-    email = "tyisocxq4iyxb-gkl@blondmail.com"  # Change email before each test run
+    email = "tyisocxq4iyxb-khk@tafmail.com"  # Change email before each test run
     password = "21212121"
     city = "Cambridge"
     message = " "

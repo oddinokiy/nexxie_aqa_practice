@@ -1,11 +1,16 @@
-# Scenario 3: Registration with deleted email
-# 1. Create unverified user
-# 2. Delete account
-# 3. Register new user with the same email
-# 4. Check registration succeeds
+# Scenario 3
+
+# 1. Open site
+# 2. Fill registration form with new email
+# 3. Submit form
+# 4. Check registration success
+# 5. Delete account
+# 6. Open site again
+# 7. Fill registration form with the same email
+# 8. Submit form
+# 9. Check registration succeeds
 
 import re
-import time
 from playwright.sync_api import Playwright, expect
 
 

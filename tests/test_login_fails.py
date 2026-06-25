@@ -1,9 +1,14 @@
-# Scenario 2: Login attempt after account deletion
+# Scenario 2
 
-# 1. Create unverified user
-# 2. Delete account
-# 3. Try login with the same email and password
-# 4. Check login fails
+# 1. Open site
+# 2. Fill registration form with new email
+# 3. Submit form
+# 4. Check registration success
+# 5. Delete account
+# 6. Open login page
+# 7. Enter same email and password
+# 8. Click Login
+# 9. Check login fails
 
 import re
 from playwright.sync_api import Playwright, expect

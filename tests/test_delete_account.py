@@ -1,10 +1,14 @@
-# 1. Create unverified user
-# 2. Login as user
-# 3. Open account settings
-# 4. Delete account
-# 5. Check account is deleted
-
 # Scenario 1
+
+# 1. Open site
+# 2. Fill registration form with new email
+# 3. Submit form
+# 4. Check registration success
+# 5. Open account settings
+# 6. Delete account
+# 7. Check account is deleted
+
+
 
 import re
 from playwright.sync_api import Playwright, expect
