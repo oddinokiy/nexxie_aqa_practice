@@ -76,13 +76,13 @@ def test_registered_user_can_open_chat(playwright: Playwright):
     page.get_by_title("Browse").click()
     expect(page).to_have_url(re.compile(r".*/#/session/search"), timeout=15000)
 
-# объяснить что здесть происходит ?
-    
+
     first_profile = page.locator(".profile-details").first
+    # Находим первого пользователя в списке Browse.
 
     try:
-        expect(first_profile).to_be_visible(timeout=30000)
-    except AssertionError:
+        expect(first_profile).to_be_visible(timeout=30000) # ждем 30 сек пока первый появится юзер
+    except AssertionError: # Если за 30 секунд пользователь не появился, значит список завис или не загрузился
         page.reload()
         page.get_by_title("Browse").click()
         expect(first_profile).to_be_visible(timeout=30000)

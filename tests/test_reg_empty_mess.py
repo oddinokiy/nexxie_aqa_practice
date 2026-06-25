@@ -83,8 +83,8 @@ def test_user_reg(playwright: Playwright):
     page.get_by_role("textbox", name="Your Message").fill(message)
     page.locator(".send-btn").click()
 
-# что значит эти 2 последние строчки ?
-
+    # Считает, сколько сообщений в чате после клика по Send.
     messages_after = page.locator("#chat-msg-list-container span.ng-binding").count()
 
+    # Проверяет, что количество сообщений не изменилось.
     assert messages_after == messages_before
