@@ -17,6 +17,7 @@ from playwright.sync_api import Playwright, expect
 def test_user_reg(playwright: Playwright):
     browser = playwright.chromium.launch(headless=False, slow_mo=500)
     page = browser.new_page()
+    # --- Data ---
 
     username = "userok21"
     email = "tyisocxq4iyxb-reye@getnada.com"  # Change email before each test run

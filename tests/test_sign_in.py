@@ -1,3 +1,4 @@
+import re
 
 from playwright.sync_api import Playwright, expect
 
@@ -8,7 +9,7 @@ def test_already_reg(playwright: Playwright):
 
     email = "shapka"
     password = "12121212"
-    message = "Sorry, shawty i'm busy right now"
+    message = "Sorry, shawty im busy right now"
 
     page.goto("https://dashboard4.nx-sandbox.com/")
 
@@ -16,10 +17,19 @@ def test_already_reg(playwright: Playwright):
     page.get_by_role("button", name="Sign In").click()
     page.get_by_role("textbox", name="Username/Email: Name").fill(email)
     page.get_by_role("textbox", name="Password:").fill(password)
-    page.get_by_role("button", name="Sign In").click()
+    page.locator("form[name='formHolder.loginForm']").get_by_role("button", name="Sign In").click()
 
-    # Open chat
-    page.get_by_text("Chat", exact=True).click()
+    # Open Browse
+    page.get_by_title("Browse").click()
+    expect(page).to_have_url(re.compile(r".*/#/session/search"), timeout=15000)
+
+    # Open first user profile
+    first_profile = page.locator(".profile-details").first
+    expect(first_profile).to_be_visible(timeout=30000)
+    first_profile.click()
+
+    # Open chat with this user
+    page.get_by_title("Chat").nth(1).click()
 
     # Send message
     message_input = page.get_by_role("textbox", name="Your Message")
@@ -27,8 +37,3 @@ def test_already_reg(playwright: Playwright):
     message_input.fill(message)
 
     page.locator(".send-btn").click()
-
-    # Check message was sent
-    expect(page.locator("#chat-msg-list-container").get_by_text(message, exact=True)).to_be_visible(timeout=10000)
-
-

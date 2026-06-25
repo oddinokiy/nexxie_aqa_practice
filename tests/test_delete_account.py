@@ -25,12 +25,12 @@ def test_user_reg(playwright: Playwright):
 
     page.goto("https://dashboard4.nx-sandbox.com/")
 
-    # --- REGISTRATION ---
+    # --- Reg ---
     page.locator("#land-content-container input[name='username']").fill(username)
     page.locator("#land-content-container input[name='email']").fill(email)
     page.locator("input[name='password']").fill(password)
 
-    # --- DATE OF BIRTH ---
+    # --- Date of birth ---
     page.get_by_label("Select box activate").nth(2).click()
     page.get_by_role("link", name="1", exact=True).click()
 
@@ -40,22 +40,22 @@ def test_user_reg(playwright: Playwright):
     page.get_by_text("YYYY").click()
     page.get_by_role("link", name="1999").click()
 
-    # --- CITY ---
+    # --- City ---
     page.locator("[name='location']").click()
     page.locator("[name='location'] input.ui-select-search").fill(city)
     page.get_by_role("option", name=city, exact=True).click()
 
-    # --- SUBMIT REGISTRATION ---
+    # --- Submit ---
     page.get_by_role("checkbox").check()
     page.locator("form[name='profileForm']").get_by_role("button", name="Register").click()
 
     expect(page).to_have_url(re.compile(r".*/#/session/search"), timeout=25000)
 
-    # --- OPEN ACCOUNT SETTINGS ---
+    # --- open acc settings ---
     page.get_by_title("Settings").click()
     page.get_by_text("Account").click()
 
-    # --- DELETE ACCOUNT ---
+    # --- del acc ---
     page.get_by_role("button", name="Delete My Account").click()
 
     page.get_by_role("textbox", name="Your password...").fill(password)

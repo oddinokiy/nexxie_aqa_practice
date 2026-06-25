@@ -19,6 +19,8 @@ def test_login_fails_after_account_delete(playwright: Playwright):
     context = browser.new_context()
     page = context.new_page()
 
+    # --- Data ---
+
     username = "userok12"
     email = "tyisocxq4iyxb-yey@blondmail.com"  # Change email before each test run
     password = "12121212"
@@ -49,11 +51,11 @@ def test_login_fails_after_account_delete(playwright: Playwright):
 
     expect(page).to_have_url(re.compile(r".*/#/session/search"), timeout=25000)
 
-    # --- OPEN ACCOUNT SETTINGS ---
+    # --- acc settings ---
     page.get_by_title("Settings").click()
     page.get_by_text("Account").click()
 
-    # --- DELETE ACCOUNT ---
+    # --- delete acc ---
     page.get_by_role("button", name="Delete My Account").click()
 
     page.get_by_role("textbox", name="Your password...").fill(password)
@@ -75,7 +77,7 @@ def test_login_fails_after_account_delete(playwright: Playwright):
         if opened_page != page:
             opened_page.close()
 
-    # --- TRY LOGIN WITH DELETED ACCOUNT ---
+    # --- try log with del acc ---
     page.bring_to_front()
     page.goto("https://dashboard4.nx-sandbox.com/#/signin")
 
@@ -90,6 +92,6 @@ def test_login_fails_after_account_delete(playwright: Playwright):
 
     page.locator("form[name='formHolder.loginForm']").get_by_role("button", name="Sign In").click()
 
-    # --- CHECK LOGIN FAILED ---
+    # --- check login failed ---
     expect(page.get_by_text("Username/password combination not found")).to_be_visible(timeout=10000)
 

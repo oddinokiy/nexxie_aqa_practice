@@ -19,6 +19,8 @@ def test_register_with_deleted_email(playwright: Playwright):
     context = browser.new_context()
     page = context.new_page()
 
+    # --- Data ---
+
     username_first = "user1"
     username_second = "user2"
     email = "tyisocxq4iyxb-gtew@robot-mail.com" # поменять имейл
@@ -27,7 +29,7 @@ def test_register_with_deleted_email(playwright: Playwright):
 
     page.goto("https://dashboard4.nx-sandbox.com/")
 
-    # --- CREATE FIRST USER ---
+    # --- create first user ---
     page.locator("#land-content-container input[name='username']").fill(username_first)
     page.locator("#land-content-container input[name='email']").fill(email)
     page.locator("input[name='password']").fill(password)
@@ -50,7 +52,7 @@ def test_register_with_deleted_email(playwright: Playwright):
 
     expect(page).to_have_url(re.compile(r".*/#/session/search"), timeout=25000)
 
-    # --- DELETE ACCOUNT ---
+    # --- del acc ---
     page.get_by_title("Settings").click()
     page.get_by_text("Account").click()
 
@@ -74,7 +76,7 @@ def test_register_with_deleted_email(playwright: Playwright):
         if opened_page != page:
             opened_page.close()
 
-    # --- REGISTER SECOND USER WITH SAME EMAIL ---
+    # --- reh second user with the same email ---
     page.goto("https://dashboard4.nx-sandbox.com/")
 
     page.locator("#land-content-container input[name='username']").fill(username_second)
@@ -97,5 +99,5 @@ def test_register_with_deleted_email(playwright: Playwright):
     page.get_by_role("checkbox").check()
     page.locator("form[name='profileForm']").get_by_role("button", name="Register").click()
 
-    # --- CHECK REGISTRATION SUCCEEDED ---
+    # --- check reg succed ---
     expect(page).to_have_url(re.compile(r".*/#/session/search"), timeout=25000)

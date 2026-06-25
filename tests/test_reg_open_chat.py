@@ -21,8 +21,9 @@ def test_registered_user_can_open_chat(playwright: Playwright):
     browser = playwright.chromium.launch(headless=False, slow_mo=500)
     page = browser.new_page()
 
+    # --- Data ---
     username = "userok21"
-    email = "tyisocxq4iyxb-jreg@tafmail.com"  # Change email before each test run
+    email = "tyisocxq4iyxb-lohl@guysmail.com"  # Change email before each test run
     password = "21212121"
     city = "Cambridge"
 
@@ -72,12 +73,20 @@ def test_registered_user_can_open_chat(playwright: Playwright):
     if close_popup.is_visible(timeout=5000):
         close_popup.click()
 
-    # Open first profile from Browse
     page.get_by_title("Browse").click()
     expect(page).to_have_url(re.compile(r".*/#/session/search"), timeout=15000)
 
+# объяснить что здесть происходит ?
+    
     first_profile = page.locator(".profile-details").first
-    expect(first_profile).to_be_visible(timeout=30000)
+
+    try:
+        expect(first_profile).to_be_visible(timeout=30000)
+    except AssertionError:
+        page.reload()
+        page.get_by_title("Browse").click()
+        expect(first_profile).to_be_visible(timeout=30000)
+
     first_profile.click()
 
     # Open chat and check message field

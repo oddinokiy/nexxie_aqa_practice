@@ -16,6 +16,8 @@ def test_user_reg(playwright: Playwright):
     browser = playwright.chromium.launch(headless=False, slow_mo=500)
     page = browser.new_page()
 
+    # --- Data ---
+
     username = "userok21"
     email = "tyisocxq4iyxb-khk@tafmail.com"  # Change email before each test run
     password = "21212121"
@@ -24,7 +26,7 @@ def test_user_reg(playwright: Playwright):
 
     page.goto("https://dashboard4.nx-sandbox.com/")
 
-    # Registration
+    # Reg
     page.locator("#land-content-container input[name='username']").fill(username)
     page.locator("#land-content-container input[name='email']").fill(email)
     page.locator("input[name='password']").fill(password)
@@ -60,7 +62,7 @@ def test_user_reg(playwright: Playwright):
     page.get_by_text("Verify your email", exact=True).click()
     page.get_by_role("button", name=re.compile("Verify", re.I)).click()
 
-    # Manually confirm email, then click Resume in Playwright Inspector
+    # Manually confirm email, then click Resume(Continue) in Playwright Inspector
     page.pause()
 
     # Close popup after email confirmation
@@ -80,6 +82,8 @@ def test_user_reg(playwright: Playwright):
 
     page.get_by_role("textbox", name="Your Message").fill(message)
     page.locator(".send-btn").click()
+
+# что значит эти 2 последние строчки ?
 
     messages_after = page.locator("#chat-msg-list-container span.ng-binding").count()
 
