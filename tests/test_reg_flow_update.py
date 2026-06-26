@@ -4,16 +4,19 @@ from playwright.sync_api import Page, expect
 
 
 def test_reg_update(page:Page):
+
     username = "userok21"
-    email = "tyisocxq4iyxb-ryge@replyloop.com"  # Change email before each test run
+    email = "tyisocxq4iyxb-sf@clowmail.com"  # Change email before each test run
     password = "21212121"
     city = "London"
     message = " Hi, how are u?"
 
     page.goto("https://dashboard4.nx-sandbox.com/")
-    page.get_by_label("Username:").fill(username)
-    page.get_by_label("Email:").fill(email)
-    page.get_by_label("Password:").fill(password)
+
+    # Registration
+    page.locator("#land-content-container input[name='username']").fill(username)
+    page.locator("#land-content-container input[name='email']").fill(email)
+    page.locator("input[name='password']").fill(password)
 
 
     page.get_by_text("DD").click()
@@ -24,7 +27,7 @@ def test_reg_update(page:Page):
     page.get_by_role("link", name="1999").click()
 
     page.locator("[name='location']").click() # еще раз потом разобраться почему так
-    page.get_by_role("textbox").fill(city)
+    page.get_by_role("textbox", name="Select box").fill(city)
     page.get_by_role("option", name=city, exact=True).click()
 
     page.get_by_role("checkbox").check()
@@ -45,6 +48,10 @@ def test_reg_update(page:Page):
     page.pause()
     page.reload()
 
+    # ФИКС: Ждем, пока сайт окончательно загрузит приветственный чат после релоада
+    page.wait_for_url(re.compile(r".*/#/session/chat/list.*"), timeout=15000)
+
+    # Теперь спокойно переходим в Browse — сайт нас больше не вернет
     page.get_by_title("Browse").click()
     expect(page).to_have_url(re.compile(r".*/#/session/search"), timeout=15000)
 
