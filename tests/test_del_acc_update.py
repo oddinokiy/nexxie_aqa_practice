@@ -12,7 +12,8 @@ from playwright.sync_api import Page
 
 # вроде бы как код работает, но лучше перепроверить
 
-def test_del_Scenario_1(page:Page):
+def test_del_Scenario_1(page: Page):
+    # --- Test data ---
     username = "userok21"
     email = "tyisocxq4iyxb-yurtuj@chapsmail.com"  # Change email before each test run
     password = "21212121"
@@ -20,39 +21,48 @@ def test_del_Scenario_1(page:Page):
 
     page.goto("https://dashboard4.nx-sandbox.com/")
 
-    # Registration
+    # --- Step 1: Register unverified user ---
     page.locator("#land-content-container input[name='username']").fill(username)
     page.locator("#land-content-container input[name='email']").fill(email)
     page.locator("input[name='password']").fill(password)
 
+    # Date of birth
     page.get_by_text("DD").click()
-    page.get_by_role("link", name="1", exact=True).click()  # что значит exact=True?
+    page.get_by_role("link", name="1", exact=True).click()
+
     page.get_by_text("MM").click()
     page.get_by_role("link", name="7", exact=True).click()
+
     page.get_by_text("YYYY").click()
     page.get_by_role("link", name="1999").click()
 
-    page.locator("[name='location']").click()  # еще раз потом разобраться почему так
+    # City
+    page.locator("[name='location']").click()
     page.get_by_role("textbox", name="Select box").fill(city)
     page.get_by_role("option", name=city, exact=True).click()
 
+    # Submit registration form
     page.get_by_role("checkbox").check()
-    # связывание (Chaining). через точку
     page.locator("form").get_by_role("button", name="Register").click()
 
-    # --- open acc settings ---
+    # --- Step 2: Open account settings ---
     page.get_by_title("Settings").click()
-    page.get_by_text("Account",exact=True).click()
+    page.get_by_text("Account", exact=True).click()
 
+    # --- Step 3: Start account deletion ---
     page.get_by_role("button", name="Delete My Account").click()
 
     page.get_by_placeholder("Your password...").fill(password)
     page.get_by_role("button", name="Why 😞").click()
 
+    # Select deletion reason and submit feedback
     page.get_by_text("Other:", exact=True).click()
     page.get_by_role("button", name="Submit").click()
 
+    # Confirm account deletion
     page.get_by_role("button", name="Delete", exact=True).click()
+
+    # Close final deletion confirmation popup
     page.get_by_role("button", name="X", exact=True).click()
 
 

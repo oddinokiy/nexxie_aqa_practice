@@ -21,8 +21,9 @@ from playwright.sync_api import Page, expect
 # понять логику кода и строчки что делают
 
 # короче прогони тест и пойми есть ли тут смысл подтверждать почту
-
 def test_reg_scenario_2(page:Page):
+    # Registered user can open chat page after registration
+
     username = "userok21"
     email = "tyisocxq4iyxb-hjhtfrr@givmail.com"  # Change email before each test run
     password = "21212121"
@@ -30,52 +31,55 @@ def test_reg_scenario_2(page:Page):
 
     page.goto("https://dashboard4.nx-sandbox.com/")
 
-    # Registration
+    # Fill registration form
     page.locator("#land-content-container input[name='username']").fill(username)
     page.locator("#land-content-container input[name='email']").fill(email)
     page.locator("input[name='password']").fill(password)
 
+    # Select date of birth
     page.get_by_text("DD").click()
-    page.get_by_role("link", name="1", exact=True).click()  # что значит exact=True?
+    page.get_by_role("link", name="1", exact=True).click()  # exact=True means exact text match
     page.get_by_text("MM").click()
     page.get_by_role("link", name="7", exact=True).click()
     page.get_by_text("YYYY").click()
     page.get_by_role("link", name="1999").click()
 
-    page.locator("[name='location']").click()  # еще раз потом разобраться почему так
+    # Select city
+    page.locator("[name='location']").click()
     page.get_by_role("textbox", name="Select box").fill(city)
     page.get_by_role("option", name=city, exact=True).click()
 
+    # Accept terms and submit registration form
     page.get_by_role("checkbox").check()
-    # связывание (Chaining). через точку
     page.locator("form").get_by_role("button", name="Register").click()
 
+    # Close notification popup if it appears
     no_thx_button = page.get_by_role("button", name="No Thanks")
     page.add_locator_handler(no_thx_button, lambda: no_thx_button.click())
 
-
-    # 1. Первый раз кликаем на Browse
+    # Open Browse page
     page.get_by_title("Browse").click()
 
-    # 2. Даем сайту 3 секунды, чтобы он выкинул нас обратно в приветственный чат
+    # Wait because the site can redirect user back to welcome chat after registration
     page.wait_for_timeout(3000)
 
-    # 3. Если сайт нас выкинул обратно в чат — кликаем по Browse второй раз (теперь окончательно!)
+    # If user was redirected back to chat, open Browse again
     if "search" not in page.url:
         page.get_by_title("Browse").click()
 
-        # 4. Железобетонно проверяем, что мы остались в Browse
+    # Check that Browse page is opened
     expect(page).to_have_url(re.compile(r".*/#/session/search"), timeout=15000)
 
-    # ФИКС: Ждем, пока улетучатся все запросы в сети и исчезнет серый спиннер загрузки
+    # Wait until page data is fully loaded
     page.wait_for_load_state("networkidle")
 
-    # 5. Кликаем на карточку и открываем чат
+    # Open first user profile and start chat
     page.locator(".profile-details").first.click()
     page.locator('div[ng-click="context.goToChat()"]').first.click()
 
     page.wait_for_load_state("networkidle")
 
+    # Check that chat message input is visible
     expect(page.get_by_role("textbox", name="Your Message")).to_be_visible(timeout=10000)
 
 
