@@ -22,7 +22,7 @@ from playwright.sync_api import Page, expect
 def test_del_Scenario_2(page: Page):
     # --- Test data ---
     username = "userok21"
-    email = "tyisocxq4iyxb-lkmp@givmail.com"  # Change email before each test run
+    email = "tyisocxq4iyxb-dsfafa@replyloop.com"  # Change email before each test run
     password = "21212121"
     city = "Cambridge"
 

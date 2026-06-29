@@ -18,7 +18,7 @@ def test_register_with_deleted_email(page:Page):
     # --- Test data ---
     username_first = "user1"
     username_second = "user2"
-    email = "tyisocxq4iyxb-oijpkpo@temptami.com"  # Change email before each run
+    email = "tyisocxq4iyxb-kgfkdp@tupmail.com"  # Change email before each run
     password = "12121212"
     city = "London"
 

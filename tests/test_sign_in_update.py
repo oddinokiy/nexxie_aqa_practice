@@ -2,13 +2,13 @@ import re
 from playwright.sync_api import Page, expect
 
 
-def test_sign_in_update(page:Page):
+def test_sign_in_update_flow(page:Page):
     # Scenario:
     # Existing user logs in, opens first profile, starts chat, and sends a message
 
     username = "shapka"
     password = "12121212"
-    message = "Sorry, shawty im busy right now"
+    message = "Wassup, how are you?"
 
     page.goto("https://dashboard4.nx-sandbox.com/")
 
@@ -26,7 +26,7 @@ def test_sign_in_update(page:Page):
     page.get_by_title("Browse").click()
     expect(page).to_have_url(re.compile(r".*/#/session/search"), timeout=15000)
 
-    # Open first user profile
+    # Open first user profile, тут можно сделать и просто чтобы какой нить рандомной бабе написать тип
     open_first_profile = page.locator(".profile-details").first
     expect(open_first_profile).to_be_visible(timeout=30000)
     open_first_profile.click()
