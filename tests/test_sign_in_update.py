@@ -37,3 +37,8 @@ def test_sign_in_update_flow(page:Page):
     # Send message
     page.get_by_placeholder("Your Message").fill(message)
     page.locator(".send-btn").click()
+    
+    # 7. Финальная проверка (Assertion)
+    # Проверяем, что отправленный текст появился внутри блока сообщений
+    chat_container = page.locator("#chat-msg-list-container")
+    expect(chat_container.get_by_text(message, exact=True)).to_be_visible(timeout=10000)
