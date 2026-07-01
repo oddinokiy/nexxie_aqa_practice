@@ -15,12 +15,9 @@ import re
 from playwright.sync_api import Page, expect
 
 
-# показывает что код рабочий а поле в sign in не заполнились визуально
-
-# также проверить там чуть код поменялся и надо понять как работает
-
 def test_del_Scenario_2(page: Page):
-    # --- Test data ---
+
+    # Test data
     username = "userok21"
     email = "tyisocxq4iyxb-dsfafa@replyloop.com"  # Change email before each test run
     password = "21212121"
@@ -28,7 +25,7 @@ def test_del_Scenario_2(page: Page):
 
     page.goto("https://dashboard4.nx-sandbox.com/")
 
-    # --- Step 1: Register unverified user ---
+    # Register unverified user
     page.locator("#land-content-container input[name='username']").fill(username)
     page.locator("#land-content-container input[name='email']").fill(email)
     page.locator("input[name='password']").fill(password)
@@ -48,18 +45,18 @@ def test_del_Scenario_2(page: Page):
     page.get_by_role("textbox", name="Select box").fill(city)
     page.get_by_role("option", name=city, exact=True).click()
 
-    # Submit registration form
+    # Accept terms and submit registration form
     page.get_by_role("checkbox").check()
     page.locator("form").get_by_role("button", name="Register").click()
 
     # Registration should be successful
     expect(page).to_have_url(re.compile(r".*/#/session/search"), timeout=25000)
 
-    # --- Step 2: Open account settings ---
+    # Open account settings
     page.get_by_title("Settings").click()
     page.get_by_text("Account", exact=True).click()
 
-    # --- Step 3: Delete account ---
+    # Delete account
     page.get_by_role("button", name="Delete My Account").click()
 
     page.get_by_placeholder("Your password...").fill(password)
@@ -82,19 +79,21 @@ def test_del_Scenario_2(page: Page):
         if opened_page != page:
             opened_page.close()
 
-    # --- Step 4: Open Sign In page ---
+    # Open Sign In page
     page.goto("https://dashboard4.nx-sandbox.com/#/signin")
     page.wait_for_load_state("networkidle")
 
+    # Find login form
     login_form = page.locator('form[name="formHolder.loginForm"]')
 
-    # --- Step 5: Try login with deleted account credentials ---
+    # Try login with deleted account credentials
     login_form.locator("input[name='username']").fill(email)
     login_form.locator("input[name='password']").fill(password)
-
     login_form.get_by_role("button", name="Sign In").click()
     page.wait_for_load_state("networkidle")
 
-    # --- Step 6: Check login failed ---
+    # Check login failed
+    # user should not be redirected to the dashboard search page,
+    # and the Sign In button should still be visible.
     expect(page).not_to_have_url(re.compile(r".*/#/session/search"))
     expect(login_form.get_by_role("button", name="Sign In")).to_be_visible()

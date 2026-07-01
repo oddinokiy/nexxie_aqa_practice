@@ -18,13 +18,13 @@ def test_register_with_deleted_email(page:Page):
     # --- Test data ---
     username_first = "user1"
     username_second = "user2"
-    email = "tyisocxq4iyxb-kgfkdp@tupmail.com"  # Change email before each run
+    email = "tyisocxq4iyxb-mophgg@vomoto.com"  # Change email before each run
     password = "12121212"
     city = "London"
 
     page.goto("https://dashboard4.nx-sandbox.com/")
 
-    # --- Step 1: Register first unverified user ---
+    # Register first unverified user
     page.locator("#land-content-container input[name='username']").fill(username_first)
     page.locator("#land-content-container input[name='email']").fill(email)
     page.locator("input[name='password']").fill(password)
@@ -39,7 +39,7 @@ def test_register_with_deleted_email(page:Page):
     page.get_by_text("YYYY").click()
     page.get_by_role("link", name="1999").click()
 
-    # City
+    # Select city from searchable dropdown
     page.locator("[name='location']").click()
     page.get_by_role("textbox", name="Select box").fill(city)
     page.get_by_role("option", name=city, exact=True).click()
@@ -51,11 +51,11 @@ def test_register_with_deleted_email(page:Page):
     # First registration should be successful
     expect(page).to_have_url(re.compile(r".*/#/session/search"), timeout=25000)
 
-    # --- Step 2: Open account settings ---
+    # Open account settings
     page.get_by_title("Settings").click()
     page.get_by_text("Account", exact=True).click()
 
-    # --- Step 3: Delete first account ---
+    # Delete first account
     page.get_by_role("button", name="Delete My Account").click()
 
     page.get_by_placeholder("Your password...").fill(password)
@@ -78,7 +78,7 @@ def test_register_with_deleted_email(page:Page):
         if opened_page != page:
             opened_page.close()
 
-    # --- Step 4: Register second user with the same email ---
+    # Register second user with the same email
     page.goto("https://dashboard4.nx-sandbox.com/")
 
     page.locator("#land-content-container input[name='username']").fill(username_second)

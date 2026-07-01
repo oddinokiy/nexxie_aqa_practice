@@ -11,13 +11,9 @@ import re
 from playwright.sync_api import Page, expect
 
 
-# понять логику кода и строчки что делают
-
-
 def test_scenario_3_empty_message(page: Page):
-    # Scenario 3:
-    # Registered user cannot send an empty message
 
+    # Test data for registration
     username = "userok23"
     email = "tyisocxq4iyxb-pupopo@getnada.com"  # Change email before each test run
     password = "21212121"
@@ -60,7 +56,7 @@ def test_scenario_3_empty_message(page: Page):
     page.pause()
     page.reload()
 
-    # Open Browse page
+    # Open Browse page with user profiles
     page.get_by_title("Browse").click()
     page.wait_for_timeout(3000)
 
@@ -68,7 +64,7 @@ def test_scenario_3_empty_message(page: Page):
     if "search" not in page.url:
         page.get_by_title("Browse").click()
 
-    # Check that Browse page is opened
+    # Verify that Browse page is opened
     expect(page).to_have_url(re.compile(r".*/#/session/search"), timeout=15000)
 
     # Wait until page data is fully loaded
@@ -78,14 +74,15 @@ def test_scenario_3_empty_message(page: Page):
     page.locator(".profile-details").first.click()
     page.locator('div[ng-click="context.goToChat()"]').first.click()
 
+    # Wait until chat page is loaded
     page.wait_for_load_state("networkidle")
 
-    # Clear message field
+    # Keep message input empty
     page.get_by_placeholder("Your Message").fill("")
 
     # Try to send empty message
     page.locator(".send-btn").click(force=True)
 
-    # Check that Send button is still disabled, so empty message was not sent
+    # Check that Send button is disabled, so empty message was not sent
     expect(page.locator(".send-btn")).to_have_attribute("disabled", re.compile(r".*"))
 

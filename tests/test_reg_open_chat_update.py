@@ -20,15 +20,15 @@ from playwright.sync_api import Page, expect
 
 # понять логику кода и строчки что делают
 
-# короче прогони тест и пойми есть ли тут смысл подтверждать почту
 def test_reg_scenario_2(page:Page):
-    # Registered user can open chat page after registration
 
+    # Test data for registration
     username = "userok21"
     email = "tyisocxq4iyxb-sdffd@inboxbear.com"  # Change email before each test run
     password = "21212121"
     city = "Cambridge"
 
+    # Open the application
     page.goto("https://dashboard4.nx-sandbox.com/")
 
     # Fill registration form
@@ -69,10 +69,11 @@ def test_reg_scenario_2(page:Page):
     # Open Browse page
     page.get_by_title("Browse").click()
 
-    # Wait because the site can redirect user back to welcome chat after registration
+    # Wait because after registration the app can redirect back to welcome chat
+    # тип мы можем оставаться на вкладке где ток подтвердили почту и поэтому нам нужно подождать
     page.wait_for_timeout(3000)
 
-    # If user was redirected back to chat, open Browse again
+    # If Browse did not stay open, click Browse again
     if "search" not in page.url:
         page.get_by_title("Browse").click()
 
@@ -80,24 +81,28 @@ def test_reg_scenario_2(page:Page):
     expect(page).to_have_url(re.compile(r".*/#/session/search"), timeout=15000)
     page.wait_for_load_state("networkidle")
 
-    # --- ЗАЩИТА ОТ БЕСКОНЕЧНОЙ ЗАГРУЗКИ (ТРЕХ ТОЧЕК) ---
+    # Find first user profile in Browse
     first_profile = page.locator(".profile-details").first
+
+    # Protection against endless loading state
     try:
-        # Ждем 7 секунд, пока появится первая анкета. Если за 7 секунд точки не исчезли — сайт завис.
+        # Wait for the first user profile to appear
         expect(first_profile).to_be_visible(timeout=7000)
     except AssertionError:
+        # If profiles did not load, reload the page and try again
         print("Сайт завис на трех точках! Перезагружаем...")
         page.reload()
         page.get_by_title("Browse").click()
         page.wait_for_load_state("networkidle")
-        # Даем сайту еще одну попытку загрузить анкеты
+
+        # Wait again after reload
         expect(first_profile).to_be_visible(timeout=15000)
-    # ----------------------------------------------------
 
     # Open first user profile and start chat
     first_profile.click()
     page.locator('div[ng-click="context.goToChat()"]').first.click()
 
+    # Wait until chat page is loaded
     page.wait_for_load_state("networkidle")
 
     # Check that chat message input is visible

@@ -15,6 +15,7 @@ from playwright.sync_api import Page, expect
 # вроде бы как код работает, но лучше перепроверить
 
 def test_del_Scenario_1(page: Page):
+
     # --- Test data ---
     username = "userok21"
     email = "tyisocxq4iyxb-jhkllo@givmail.com"  # Change email before each test run
@@ -23,7 +24,7 @@ def test_del_Scenario_1(page: Page):
 
     page.goto("https://dashboard4.nx-sandbox.com/")
 
-    # --- Step 1: Register unverified user ---
+    # Register unverified user
     page.locator("#land-content-container input[name='username']").fill(username)
     page.locator("#land-content-container input[name='email']").fill(email)
     page.locator("input[name='password']").fill(password)
@@ -47,11 +48,11 @@ def test_del_Scenario_1(page: Page):
     page.get_by_role("checkbox").check()
     page.locator("form").get_by_role("button", name="Register").click()
 
-    # --- Step 2: Open account settings ---
+    # Open account settings
     page.get_by_title("Settings").click()
     page.get_by_text("Account", exact=True).click()
 
-    # --- Step 3: Start account deletion ---
+    # Start account deletion
     page.get_by_role("button", name="Delete My Account").click()
 
     page.get_by_placeholder("Your password...").fill(password)
@@ -67,5 +68,5 @@ def test_del_Scenario_1(page: Page):
     # Close final deletion confirmation popup
     page.get_by_role("button", name="X", exact=True).click()
 
-    # Проверяем, что нас гарантированно унесло с внутреннего дашборда
+    # Verify that user is redirected outside the internal dashboard
     expect(page).not_to_have_url(re.compile(r".*dashboard4\.nx-sandbox\.com/.*"), timeout=15000)

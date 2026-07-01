@@ -8,22 +8,22 @@
 # 7. Send message
 # 8. Check message is visible
 
-# rabotaet code
 
 from playwright.sync_api import Page, expect
 import re
 
-# понять логику кода и строчки что делают
 
 def test_reg_scenario_1(page:Page):
     # Registered user verifies email, opens chat with a user, and sends a message
 
+    # Test data for registration and message sending
     username = "userok21"
     email = "tyisocxq4iyxb-hekjmo@tupmail.com"  # Change email before each test run
     password = "21212121"
     city = "London"
     message = "Hi, how are u?"
 
+    # Open the application
     page.goto("https://dashboard4.nx-sandbox.com/")
 
     # Fill registration form
@@ -39,7 +39,7 @@ def test_reg_scenario_1(page:Page):
     page.get_by_text("YYYY").click()
     page.get_by_role("link", name="1999").click()
 
-    # Select city
+    # Select city from searchable dropdown
     page.locator("[name='location']").click()
     page.get_by_role("textbox", name="Select box").fill(city)
     page.get_by_role("option", name=city, exact=True).click()
@@ -81,6 +81,7 @@ def test_reg_scenario_1(page:Page):
     page.locator(".profile-details").first.click()
     page.locator('div[ng-click="context.goToChat()"]').first.click()
 
+    # Wait until chat page is loaded
     page.wait_for_load_state("networkidle")
 
     # Send message
