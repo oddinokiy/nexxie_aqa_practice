@@ -18,7 +18,7 @@ def test_register_with_deleted_email(page:Page):
     # --- Test data ---
     username_first = "user1"
     username_second = "user2"
-    email = "tyisocxq4iyxb-mophgg@vomoto.com"  # Change email before each run
+    email = "tyisocxq4iyxb-moloko@getmule.com"  # Change email before each run
     password = "12121212"
     city = "London"
 
@@ -31,13 +31,13 @@ def test_register_with_deleted_email(page:Page):
 
     # Date of birth
     page.get_by_text("DD").click()
-    page.get_by_role("link", name="1", exact=True).click()
+    page.get_by_role("link", name="3", exact=True).click()
 
     page.get_by_text("MM").click()
-    page.get_by_role("link", name="7", exact=True).click()
+    page.get_by_role("link", name="4", exact=True).click()
 
     page.get_by_text("YYYY").click()
-    page.get_by_role("link", name="1999").click()
+    page.get_by_role("link", name="2004").click()
 
     # Select city from searchable dropdown
     page.locator("[name='location']").click()

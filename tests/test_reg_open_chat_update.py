@@ -24,7 +24,7 @@ def test_reg_scenario_2(page:Page):
 
     # Test data for registration
     username = "userok21"
-    email = "tyisocxq4iyxb-sdffd@inboxbear.com"  # Change email before each test run
+    email = "tyisocxq4iyxb-lkjjn@fivermail.com"  # Change email before each test run
     password = "21212121"
     city = "Cambridge"
 
@@ -38,11 +38,11 @@ def test_reg_scenario_2(page:Page):
 
     # Select date of birth
     page.get_by_text("DD").click()
-    page.get_by_role("link", name="1", exact=True).click()  # exact=True means exact text match
+    page.get_by_role("link", name="8", exact=True).click()  # exact=True means exact text match
     page.get_by_text("MM").click()
-    page.get_by_role("link", name="7", exact=True).click()
+    page.get_by_role("link", name="5", exact=True).click()
     page.get_by_text("YYYY").click()
-    page.get_by_role("link", name="1999").click()
+    page.get_by_role("link", name="2005").click()
 
     # Select city
     page.locator("[name='location']").click()
@@ -86,10 +86,11 @@ def test_reg_scenario_2(page:Page):
 
     # Protection against endless loading state
     try:
+#Если Browse завис на загрузке, тест обновляет страницу и пробует открыть первого пользователя еще раз.
         # Wait for the first user profile to appear
         expect(first_profile).to_be_visible(timeout=7000)
     except AssertionError:
-        # If profiles did not load, reload the page and try again
+        # If profiles did't load, reload the page and try again
         print("Сайт завис на трех точках! Перезагружаем...")
         page.reload()
         page.get_by_title("Browse").click()

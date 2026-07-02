@@ -15,7 +15,7 @@ def test_scenario_3_empty_message(page: Page):
 
     # Test data for registration
     username = "userok23"
-    email = "tyisocxq4iyxb-pupopo@getnada.com"  # Change email before each test run
+    email = "tyisocxq4iyxb-sdcmlk@temptami.com"  # Change email before each test run
     password = "21212121"
     city = "London"
 
@@ -32,11 +32,11 @@ def test_scenario_3_empty_message(page: Page):
 
     # Select date of birth
     page.get_by_text("DD").click()
-    page.get_by_role("link", name="1", exact=True).click()
+    page.get_by_role("link", name="27", exact=True).click()
     page.get_by_text("MM").click()
-    page.get_by_role("link", name="7", exact=True).click()
+    page.get_by_role("link", name="4", exact=True).click()
     page.get_by_text("YYYY").click()
-    page.get_by_role("link", name="1999").click()
+    page.get_by_role("link", name="2004").click()
 
     # Select city
     page.locator("[name='location']").click()
@@ -67,6 +67,7 @@ def test_scenario_3_empty_message(page: Page):
     # Verify that Browse page is opened
     expect(page).to_have_url(re.compile(r".*/#/session/search"), timeout=15000)
 
+# если что добавить просто из первого сценария try и поставить его сюда потому что такая же проблема
     # Wait until page data is fully loaded
     page.wait_for_load_state("networkidle")
 
@@ -78,7 +79,7 @@ def test_scenario_3_empty_message(page: Page):
     page.wait_for_load_state("networkidle")
 
     # Keep message input empty
-    page.get_by_placeholder("Your Message").fill("")
+    page.get_by_placeholder("Your Message").fill(" ")
 
     # Try to send empty message
     page.locator(".send-btn").click(force=True)

@@ -16,9 +16,18 @@ import re
 def test_reg_scenario_1(page:Page):
     # Registered user verifies email, opens chat with a user, and sends a message
 
+    # page.locator("#gender").get_by_label("Select box activate").click()
+    # page.get_by_role("link", name="a female").click()
+    # page.locator("#lookingFor").get_by_label("Select box activate").click()
+    # page.get_by_role("link", name="a male").click()
+
+    # page.locator("#country").get_by_label("Select box activate").click()
+    # page.get_by_role("link", name="Spain").click()
+
+
     # Test data for registration and message sending
     username = "userok21"
-    email = "tyisocxq4iyxb-hekjmo@tupmail.com"  # Change email before each test run
+    email = "tyisocxq4iyxb-sdfdf@chapsmail.com"  # Change email before each test run
     password = "21212121"
     city = "London"
     message = "Hi, how are u?"
@@ -33,11 +42,11 @@ def test_reg_scenario_1(page:Page):
 
     # Select date of birth
     page.get_by_text("DD").click()
-    page.get_by_role("link", name="1", exact=True).click()  # exact=True means exact text match
+    page.get_by_role("link", name="7", exact=True).click()  # exact=True means exact text match
     page.get_by_text("MM").click()
     page.get_by_role("link", name="7", exact=True).click()
     page.get_by_text("YYYY").click()
-    page.get_by_role("link", name="1999").click()
+    page.get_by_role("link", name="2007").click()
 
     # Select city from searchable dropdown
     page.locator("[name='location']").click()
@@ -78,11 +87,19 @@ def test_reg_scenario_1(page:Page):
     page.wait_for_load_state("networkidle")
 
     # Open first user profile and start chat
-    page.locator(".profile-details").first.click()
-    page.locator('div[ng-click="context.goToChat()"]').first.click()
+    first_profile = page.locator(".profile-details").first
 
-    # Wait until chat page is loaded
-    page.wait_for_load_state("networkidle")
+# Если Browse завис на загрузке, тест обновляет страницу и пробует открыть первого пользователя еще раз.
+    try:
+        expect(first_profile).to_be_visible(timeout=7000)
+    except AssertionError:
+        page.reload()
+        page.get_by_title("Browse").click()
+        expect(first_profile).to_be_visible(timeout=15000)
+
+    first_profile.click()
+
+    page.locator('div[ng-click="context.goToChat()"]').first.click()
 
     # Send message
     page.get_by_placeholder("Your Message").fill(message)
@@ -91,3 +108,4 @@ def test_reg_scenario_1(page:Page):
     # Check that sent message is visible in chat
     chat_container = page.locator("#chat-msg-list-container")
     expect(chat_container.get_by_text(message, exact=True)).to_be_visible(timeout=10000)
+

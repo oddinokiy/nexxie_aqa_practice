@@ -18,7 +18,7 @@ def test_del_Scenario_1(page: Page):
 
     # --- Test data ---
     username = "userok21"
-    email = "tyisocxq4iyxb-jhkllo@givmail.com"  # Change email before each test run
+    email = "tyisocxq4iyxb-milk@replyloop.com"  # Change email before each test run
     password = "21212121"
     city = "Cambridge"
 
@@ -34,7 +34,7 @@ def test_del_Scenario_1(page: Page):
     page.get_by_role("link", name="1", exact=True).click()
 
     page.get_by_text("MM").click()
-    page.get_by_role("link", name="7", exact=True).click()
+    page.get_by_role("link", name="2", exact=True).click()
 
     page.get_by_text("YYYY").click()
     page.get_by_role("link", name="1999").click()
@@ -69,4 +69,5 @@ def test_del_Scenario_1(page: Page):
     page.get_by_role("button", name="X", exact=True).click()
 
     # Verify that user is redirected outside the internal dashboard
+    # проверяем, что после удаления аккаунта пользователя выкинуло из dashboard.
     expect(page).not_to_have_url(re.compile(r".*dashboard4\.nx-sandbox\.com/.*"), timeout=15000)

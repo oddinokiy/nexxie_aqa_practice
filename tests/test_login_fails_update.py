@@ -19,7 +19,7 @@ def test_del_Scenario_2(page: Page):
 
     # Test data
     username = "userok21"
-    email = "tyisocxq4iyxb-dsfafa@replyloop.com"  # Change email before each test run
+    email = "tyisocxq4iyxb-milkis@vomoto.com"  # Change email before each test run
     password = "21212121"
     city = "Cambridge"
 
@@ -32,13 +32,13 @@ def test_del_Scenario_2(page: Page):
 
     # Date of birth
     page.get_by_text("DD").click()
-    page.get_by_role("link", name="1", exact=True).click()
+    page.get_by_role("link", name="2", exact=True).click()
 
     page.get_by_text("MM").click()
     page.get_by_role("link", name="7", exact=True).click()
 
     page.get_by_text("YYYY").click()
-    page.get_by_role("link", name="1999").click()
+    page.get_by_role("link", name="2002").click()
 
     # City
     page.locator("[name='location']").click()

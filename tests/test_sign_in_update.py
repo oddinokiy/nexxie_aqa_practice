@@ -24,6 +24,11 @@ def test_sign_in_update_flow(page:Page):
     # Submit login form
     page.locator("form").get_by_role("button", name="Sign In").click()
 
+    close_popup = page.locator(".modal-content .close, .popup .close, button.close").first
+
+    if close_popup.is_visible(timeout=5000):
+        close_popup.click()
+
     # Open Browse page
     page.get_by_title("Browse").click()
     # Verify that Browse page was opened successfully
@@ -43,7 +48,7 @@ def test_sign_in_update_flow(page:Page):
     page.get_by_placeholder("Your Message").fill(message)
     page.locator(".send-btn").click()
     
-    # 7. Финальная проверка (Assertion)
+    # Финальная проверка
     # Verify that the sent message is displayed in the chat messages container
     chat_container = page.locator("#chat-msg-list-container")
     expect(chat_container.get_by_text(message, exact=True)).to_be_visible(timeout=10000)
