@@ -10,15 +10,17 @@
 
 
 import re
+import pytest
 from playwright.sync_api import Page, expect
 
 # вроде бы как код работает, но лучше перепроверить
 
+@pytest.mark.no_auth
 def test_del_Scenario_1(page: Page):
 
     # --- Test data ---
-    username = "userok21"
-    email = "tyisocxq4iyxb-milk@replyloop.com"  # Change email before each test run
+    username = "leps11"
+    email = "tyisocxq4iyxb-lkjklj@givmail.com"  # Change email before each test run
     password = "21212121"
     city = "Cambridge"
 

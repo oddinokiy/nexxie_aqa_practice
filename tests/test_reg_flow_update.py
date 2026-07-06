@@ -11,8 +11,10 @@
 
 from playwright.sync_api import Page, expect
 import re
+import pytest
 
 
+@pytest.mark.no_auth
 def test_reg_scenario_1(page:Page):
     # Registered user verifies email, opens chat with a user, and sends a message
 
@@ -27,7 +29,7 @@ def test_reg_scenario_1(page:Page):
 
     # Test data for registration and message sending
     username = "userok21"
-    email = "tyisocxq4iyxb-sdfdf@chapsmail.com"  # Change email before each test run
+    email = "tyisocxq4iyxb-slkjklj@temptami.com"  # Change email before each test run
     password = "21212121"
     city = "London"
     message = "Hi, how are u?"
@@ -108,4 +110,3 @@ def test_reg_scenario_1(page:Page):
     # Check that sent message is visible in chat
     chat_container = page.locator("#chat-msg-list-container")
     expect(chat_container.get_by_text(message, exact=True)).to_be_visible(timeout=10000)
-
