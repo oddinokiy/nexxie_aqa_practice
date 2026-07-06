@@ -8,14 +8,16 @@
 # 6. Check empty message is not sent
 
 import re
+import pytest
 from playwright.sync_api import Page, expect
 
 
+@pytest.mark.no_auth
 def test_scenario_3_empty_message(page: Page):
 
     # Test data for registration
-    username = "userok23"
-    email = "tyisocxq4iyxb-sdcmlk@temptami.com"  # Change email before each test run
+    username = "loop"
+    email = "tyisocxq4iyxb-lsdfsdf@replyloop.com"  # Change email before each test run
     password = "21212121"
     city = "London"
 
@@ -86,4 +88,3 @@ def test_scenario_3_empty_message(page: Page):
 
     # Check that Send button is disabled, so empty message was not sent
     expect(page.locator(".send-btn")).to_have_attribute("disabled", re.compile(r".*"))
-

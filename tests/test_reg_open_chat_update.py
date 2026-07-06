@@ -15,11 +15,13 @@
 
 
 import re
+import pytest
 
 from playwright.sync_api import Page, expect
 
 # понять логику кода и строчки что делают
 
+@pytest.mark.no_auth
 def test_reg_scenario_2(page:Page):
 
     # Test data for registration
@@ -108,4 +110,3 @@ def test_reg_scenario_2(page:Page):
 
     # Check that chat message input is visible
     expect(page.get_by_role("textbox", name="Your Message")).to_be_visible(timeout=10000)
-

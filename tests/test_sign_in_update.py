@@ -1,7 +1,9 @@
 import re
+import pytest
 from playwright.sync_api import Page, expect
 
 
+@pytest.mark.no_auth
 def test_sign_in_update_flow(page:Page):
     # Scenario:
     # Existing user logs in, opens first profile, starts chat, and sends a message

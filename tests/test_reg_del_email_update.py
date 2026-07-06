@@ -10,9 +10,11 @@
 # 9. Check registration succeeds
 
 import re
+import pytest
 from playwright.sync_api import expect, Page
 
 
+@pytest.mark.no_auth
 def test_register_with_deleted_email(page:Page):
 
     # --- Test data ---

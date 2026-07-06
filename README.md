@@ -85,6 +85,27 @@ A visual E2E flow diagram is available below:
 
 ---
 
+# 🔐 Saved Authentication State
+
+Most tests can start already logged in by using Playwright `storageState`.
+
+Create the saved login state once:
+
+```bash
+playwright codegen --save-storage=auth/user.json https://dashboard4.nx-sandbox.com
+```
+
+In the opened browser, log in manually with an existing user account, then close the browser.
+
+After that, normal tests that use the `page` fixture will start with this authenticated session.
+
+Important:
+- Do not put login or registration steps into tests that only check internal pages.
+- Keep registration, sign-in, and delete-account tests marked with `@pytest.mark.no_auth`, because those scenarios need a clean public session.
+- `auth/user.json` is ignored by Git because it contains private session data.
+
+---
+
 # 🎯 Purpose of this Project
 
 This project demonstrates:
