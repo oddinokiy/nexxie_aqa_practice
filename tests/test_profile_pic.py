@@ -5,11 +5,13 @@ from playwright.sync_api import Page, expect
 def test_upload_photo(page: Page):
     page.goto("https://dashboard4.nx-sandbox.com/#/session/search")
 
-    page.get_by_text("nik See your profile").click()
+# на компе почему то не показывается как мы нажимаем на кнопку upload photo, но при этом тест прошел
+    page.get_by_text("shapka See your profile").click()
 
     # Пауза, чтобы глазами увидеть страницу профиля
     page.wait_for_timeout(2000)
 
+# перед показом поменять фотку чтобы было видно что новая фотка закинута
     photo_path = Path("tests/files/dog.png").resolve()
 
     # Загружаем файл в первый input type=file

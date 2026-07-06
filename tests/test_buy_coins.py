@@ -1,6 +1,6 @@
 from playwright.sync_api import Page, expect
 
-
+# надо будет выбрать именно конкретный тариф, просто чтобы было понимание у них
 def test_to_get_coins(page: Page):
     # Open the website.
     # The user is already logged in because conftest.py uses auth/user.json.
@@ -15,7 +15,7 @@ def test_to_get_coins(page: Page):
 
     try:
         # If the coin package is visible, select it.
-        expect(coin_package).to_be_visible(timeout=5000)
+        expect(coin_package).to_be_visible(timeout=5000) # что значит это данная строка
         coin_package.click()
     except AssertionError:
         # If the package is not visible, we are probably already on the payment page.
