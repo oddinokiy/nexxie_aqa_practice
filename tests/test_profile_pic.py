@@ -1,27 +1,32 @@
+
+
 from pathlib import Path
 from playwright.sync_api import Page, expect
 
 
 def test_upload_photo(page: Page):
+
     page.goto("https://dashboard4.nx-sandbox.com/#/session/search")
 
-# на компе почему то не показывается как мы нажимаем на кнопку upload photo, но при этом тест прошел
-    page.get_by_text("shapka See your profile").click()
+    # Navigate to the user profile via the side menu
+    page.locator(".profile-area").click()
 
-    # Пауза, чтобы глазами увидеть страницу профиля
+    # Pause to visually check the profile page
     page.wait_for_timeout(2000)
 
-# перед показом поменять фотку чтобы было видно что новая фотка закинута
+    # перед показом поменять фотку чтобы было видно что новая фотка закинута
+    # Get the absolute path to the image file
     photo_path = Path("tests/files/dog.png").resolve()
 
-    # Загружаем файл в первый input type=file
-    page.locator("input[type='file']").nth(0).set_input_files(str(photo_path))
+    # Upload the photo directly into the hidden file input
+    # Note: Playwright bypasses the OS file dialog, so no physical click is visible here
+    page.locator("input[type='file']").first.set_input_files(str(photo_path))
 
-    # Пауза, чтобы увидеть, появилось ли превью/кнопка
+    # Pause to let the image preview load on the UI
     page.wait_for_timeout(3000)
 
-    # Если появилась кнопка Upload Photo, нажимаем её
+    # Confirm the upload by clicking the UI button
     page.get_by_role("button", name="Upload Photo").click()
 
-    # Пауза после загрузки
+    # Final pause to visually verify the successful upload
     page.wait_for_timeout(3000)

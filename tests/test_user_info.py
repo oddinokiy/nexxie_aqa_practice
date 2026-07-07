@@ -1,16 +1,22 @@
-from playwright.sync_api import Page, expect
+from playwright.sync_api import Page
 
 
 def test_update_profile(page: Page):
-    # 1. Открываем сайт
+
     page.goto("https://dashboard4.nx-sandbox.com/#/session/search")
 
-    # ВОТ ЭТОГО НЕ ХВАТАЛО: Сначала открываем сам профиль!
+    #Open the profile
     page.get_by_text("shapka", exact=True).click()
 
-    # А теперь жмём карандашик (с .first, чтобы точно кликнуть нужный)
-    page.locator(".edit-icon .icon").first.click()
-    # 2. Дата рождения
+    # Click the edit icon
+    page.locator(".edit-icon").first.click()
+
+    # Выбираем конкретное число
+    # Используем link/"option", потому что в коде у элемента стоит role= link/"option",
+    # так как на сайте тип есть выбор по DOM
+
+    #Update Date of Birth
+    #Expand the dropdowns and select the exact values.
     page.get_by_text("Day 13").click()
     page.get_by_role("link", name="10").click()
 
@@ -20,28 +26,34 @@ def test_update_profile(page: Page):
     page.get_by_text("Year 1992").click()
     page.get_by_role("link", name="1995").click()
 
-    # 3. Локация
-    page.locator("span").filter(has_text="UK").first.click()
+    # 3 Update location
+    page.locator("span").filter(has_text="UK").first.click()  # забей тут просто через codegen
     page.get_by_role("link", name="Spain").click()
 
     # Сохраняем основную инфу
+    # Ищем "Save" строго внутри окна профиля (через ID родителя #edit-profile-dialog).
     page.locator("#edit-profile-dialog").get_by_role("button", name="Save").click()
 
-    # 4. Физические данные
-    page.get_by_text("Height Not Given").click()
+    # Update Physical Attributes
+    page.locator("#height").click()
     page.get_by_role("link", name="1.81m").click()
 
-    page.get_by_text("Weight Not Given").click()
+    page.locator("#weight").click()
     page.get_by_role("link", name="62kg").click()
 
-    page.get_by_text("Eye colour Not Given").click()
+    page.locator("#eyeColor").click()
     page.get_by_role("link", name="Blue").click()
 
-    page.get_by_text("Smoking habits Not Given").click()
+    page.locator("#smokingHabits").click()
     page.get_by_role("link", name="No", exact=True).click()
 
-    # 5. Интересы
+    #Update Interests
     page.get_by_role("button", name="Add").click()
     page.get_by_text("69", exact=True).click()
     page.get_by_text("Anal").click()
+
+    # Ищем "Save" строго внутри окна интересов (через ID родителя #edit-interests-dialog).
+    # Чейнинг нужен, чтобы не словить strict mode error, если кнопок Save на сайте несколько.
+
+    # Save interests
     page.locator("#edit-interests-dialog").get_by_role("button", name="Save").click()
