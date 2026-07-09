@@ -1,7 +1,7 @@
 from pathlib import Path
 
 import pytest
-
+import allure  # <- Добавили импорт Allure для работы со скриншотами
 
 PROJECT_ROOT = Path(__file__).resolve().parent
 AUTH_STATE = PROJECT_ROOT / "auth" / "user.json"
@@ -43,3 +43,22 @@ def page(request, browser_context_args):
     page = context.new_page()
     yield page
     context.close()
+
+
+# --- Магия Allure: перехватываем падение и делаем скриншот ---
+@pytest.hookimpl(tryfirst=True, hookwrapper=True)
+def pytest_runtest_makereport(item, call):
+    outcome = yield
+    report = outcome.get_result()
+
+    # Если шаг теста упал (failed) во время выполнения (call)
+    if report.when == "call" and report.failed:
+        # Проверяем, что в тесте использовалась наша фикстура page
+        if "page" in item.fixturenames:
+            page = item.funcargs["page"]
+            # Делаем скриншот и крепим его к Allure
+            allure.attach(
+                page.screenshot(full_page=True),
+                name="screenshot_on_failure",
+                attachment_type=allure.attachment_type.PNG
+            )
