@@ -24,7 +24,13 @@ jobs:
         pip install -r requirements.txt
 
     - name: Устанавливаем браузеры Playwright
-      run: npx playwright install --with-deps
+      run: python -m playwright install --with-deps
+
+    - name: Создаем папку auth
+      run: mkdir -p auth
+
+    - name: Восстанавливаем auth/user.json из Секретов Гитхаба
+      run: echo '${{ secrets.AUTH_USER_JSON }}' > auth/user.json
 
     - name: Запускаем наши тесты
       run: pytest
