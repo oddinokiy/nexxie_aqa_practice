@@ -6,7 +6,7 @@ def test_update_profile(page: Page):
     page.goto("https://dashboard4.nx-sandbox.com/#/session/search")
 
     #Open the profile
-    page.get_by_text("shapka", exact=True).click()
+    page.get_by_text("nik", exact=True).click()
 
     # Click the edit icon
     page.locator(".edit-icon").first.click()
@@ -32,7 +32,7 @@ def test_update_profile(page: Page):
 
     # Сохраняем основную инфу
     # Ищем "Save" строго внутри окна профиля (через ID родителя #edit-profile-dialog).
-    page.locator("#edit-profile-dialog").get_by_role("button", name="Save").click()
+    page.locator("#edit-profile-dialog").get_by_role("button", name="Save").click() 
 
     # Update Physical Attributes
     page.locator("#height").click()

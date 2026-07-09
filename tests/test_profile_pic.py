@@ -8,19 +8,23 @@ def test_upload_photo(page: Page):
 
     page.goto("https://dashboard4.nx-sandbox.com/#/session/search")
 
-    # Navigate to the user profile via the side menu
+    # Navigate to the user profile
     page.locator(".profile-area").click()
 
     # Pause to visually check the profile page
     page.wait_for_timeout(2000)
 
     # перед показом поменять фотку чтобы было видно что новая фотка закинута
+    #Эта строка находит картинку в проекте и превращает её путь в полный путь на компьютере
     # Get the absolute path to the image file
-    photo_path = Path("tests/files/dog.png").resolve()
+    photo_path = Path("tests/files/cat.png").resolve()
 
     # Upload the photo directly into the hidden file input
     # Note: Playwright bypasses the OS file dialog, so no physical click is visible here
     page.locator("input[type='file']").first.set_input_files(str(photo_path))
+
+    #Playwright находит этот input и через set_input_files напрямую передаёт туда картинку
+    #Поэтому окно выбора файла не открывается, но файл загружается программно.
 
     # Pause to let the image preview load on the UI
     page.wait_for_timeout(3000)

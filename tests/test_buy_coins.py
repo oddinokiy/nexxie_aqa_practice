@@ -10,22 +10,20 @@ def test_to_get_coins(page: Page):
     # Open the wallet page
     page.get_by_text("My Wallet").click()
 
-    # Sometimes the app shows coin packages
-    # Sometimes it opens the payment page immediately
-    coin_package = page.get_by_text("Basic 300 Coins", exact=False).first # ?
+    # the app shows coin packages
+    coin_package = page.get_by_text("Basic 300 Coins", exact=False).first
 
 
-    # Тест смотрит в этот «прицел» ровно 5 секунд.
-    # Если видит кнопку пакета монет — нажимает.
-    # Если сайт решил пропустить этот шаг и сразу открыл ввод карты (кнопки нет) —
-    # тест спокойно глотает ошибку и идет дальше.
+    # Если пакет монет виден — выбрать его.
+    # Если пакет не виден — значит мы уже на странице оплаты, просто продолжаем заполнять карту.
 
     try:
-        # If the coin package is visible, select it.
+        # If we see "Basic 300 Coins", click this package.
         expect(coin_package).to_be_visible(timeout=5000)
         coin_package.click()
     except AssertionError:
-        # If the package is not visible, we are probably already on the payment page.
+        # If we do not see the package, continue.
+        # It means the payment form may already be open.
         pass
 
     # Check that payment form is visible
