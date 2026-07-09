@@ -51,3 +51,8 @@ def test_sign_in_update_flow(page: Page):
     with allure.step("Verify sent message is visible in chat"):
         chat_container = page.locator("#chat-msg-list-container")
         expect(chat_container.get_by_text(message, exact=True)).to_be_visible(timeout=10000)
+
+
+# Запускаем построчно в терминале, потом как закончим показывать ctrl+c выйти из терминала
+# 1. pytest tests/test_for_q1.py --alluredir=allure-results --clean-alluredir
+# 2. allure serve allure-results
