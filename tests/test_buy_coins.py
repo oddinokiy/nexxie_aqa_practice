@@ -30,16 +30,16 @@ def test_to_get_coins(page: Page):
     expect(page.get_by_role("textbox", name="Cardholder Name")).to_be_visible(timeout=10000)
 
     # Fill cardholder name
-    page.get_by_role("textbox", name="Cardholder Name").fill("Double r")
+    page.locator("#rc-cardholder").fill("Double r")
 
     # Fill test card number
-    page.get_by_role("textbox", name="Card Number").fill("4242424242424242")
+    page.locator("#rc-cardnumber").fill("4242424242424242")
 
     # Fill card expiry date
-    page.get_by_role("textbox", name="Expiry Date").fill("11/27")
+    page.locator("#rc-expiryDate").fill("11/27")
 
     # Fill CVC
-    page.get_by_role("textbox", name="CVC").fill("123")
+    page.locator("#rc-cvcnumber").fill("123")
 
     # Do not remember this card
     page.locator("#rememberCard").uncheck()

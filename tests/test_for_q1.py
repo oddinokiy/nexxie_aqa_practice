@@ -3,6 +3,7 @@ import pytest
 import allure
 from playwright.sync_api import Page, expect
 
+# показать отчетность теста через allure и рассказать мини сценарий чтобы руководители понимали о чем идет речь
 
 @pytest.mark.no_auth
 def test_sign_in_update_flow(page: Page):
