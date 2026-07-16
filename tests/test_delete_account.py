@@ -12,16 +12,13 @@
 import re
 import pytest
 from playwright.sync_api import Page, expect
-
-# вроде бы как код работает, но лучше перепроверить
+from tests.data_factory import unique_account
 
 @pytest.mark.no_auth
-def test_del_Scenario_1(page: Page):
+def test_unverified_user_can_delete_account(page: Page):
 
     # --- Test data ---
-    username = "leps11"
-    email = "tyisocxq4iyxb-lkjklj@givmail.com"  # Change email before each test run
-    password = "21212121"
+    username, email, password = unique_account("givmail.com")
     city = "Cambridge"
 
     page.goto("https://dashboard4.nx-sandbox.com/")
@@ -71,5 +68,5 @@ def test_del_Scenario_1(page: Page):
     page.get_by_role("button", name="X", exact=True).click()
 
     # Verify that user is redirected outside the internal dashboard
-    # проверяем, что после удаления аккаунта пользователя выкинуло из dashboard.
+    # Verify that the deleted user is returned to the public page.
     expect(page).not_to_have_url(re.compile(r".*dashboard4\.nx-sandbox\.com/.*"), timeout=15000)

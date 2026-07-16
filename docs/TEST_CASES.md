@@ -19,17 +19,18 @@ Base URL: `https://dashboard4.nx-sandbox.com`
 
 | ID | Case | Status | Test File |
 | --- | --- | --- | --- |
-| TC-001 | Logged-in user can access profile page | Automated | `tests/test_authenticated_session_update.py` |
+| TC-001 | Logged-in user can access profile page | Automated | `tests/test_authenticated_session.py` |
 | TC-002 | Logged-in user can upload profile photo | Automated | `tests/test_profile_pic.py` |
 | TC-003 | Logged-in user can buy coins | Automated | `tests/test_buy_coins.py` |
-| TC-004 | New unverified user can delete account | Automated | `tests/test_del_acc_update.py` |
-| TC-005 | Deleted user cannot sign in | Automated | `tests/test_login_fails_update.py` |
-| TC-006 | Deleted email can be used for new registration | Automated | `tests/test_reg_del_email_update.py` |
-| TC-007 | Existing user can sign in and send chat message | Automated | `tests/test_sign_in_update.py` |
-| TC-008 | New registered user can verify email and send message | Automated | `tests/test_reg_flow_update.py` |
-| TC-009 | New verified user can open chat from Browse page | Automated | `tests/test_reg_open_chat_update.py` |
-| TC-010 | Empty chat message cannot be sent | Automated | `tests/test_reg_empty_mess_update.py` |
+| TC-004 | New unverified user can delete account | Automated | `tests/test_delete_account.py` |
+| TC-005 | Deleted user cannot sign in | Automated | `tests/test_deleted_account_login.py` |
+| TC-006 | Deleted email can be used for new registration | Automated | `tests/test_deleted_email_registration.py` |
+| TC-007 | Existing user can sign in and send chat message | Automated | `tests/test_sign_in_chat.py` |
+| TC-008 | New registered user can verify email and send message | Manual verification | `tests/test_registration_chat.py` |
+| TC-009 | New verified user can open chat from Browse page | Manual verification | `tests/test_registration_open_chat.py` |
+| TC-010 | Empty chat message cannot be sent | Manual verification | `tests/test_empty_message.py` |
 | TC-011 | Logged-in user can update profile information | Automated | `tests/test_user_info.py` |
+| TC-012 | Logged-in user can purchase incognito subscription | Payment sandbox | `tests/test_subscription.py` |
 
 ---
 
@@ -67,7 +68,7 @@ Status: Automated
 Test file:
 
 ```bash
-tests/test_authenticated_session_update.py
+tests/test_authenticated_session.py
 ```
 
 Preconditions:
@@ -191,7 +192,7 @@ Status: Automated
 Test file:
 
 ```bash
-tests/test_del_acc_update.py
+tests/test_delete_account.py
 ```
 
 Preconditions:
@@ -238,7 +239,7 @@ Status: Automated
 Test file:
 
 ```bash
-tests/test_login_fails_update.py
+tests/test_deleted_account_login.py
 ```
 
 Preconditions:
@@ -280,7 +281,7 @@ Status: Automated
 Test file:
 
 ```bash
-tests/test_reg_del_email_update.py
+tests/test_deleted_email_registration.py
 ```
 
 Preconditions:
@@ -322,7 +323,7 @@ Status: Automated
 Test file:
 
 ```bash
-tests/test_sign_in_update.py
+tests/test_sign_in_chat.py
 ```
 
 Preconditions:
@@ -365,7 +366,7 @@ Status: Automated with manual checkpoint
 Test file:
 
 ```bash
-tests/test_reg_flow_update.py
+tests/test_registration_chat.py
 ```
 
 Preconditions:
@@ -411,7 +412,7 @@ Status: Automated with manual checkpoint
 Test file:
 
 ```bash
-tests/test_reg_open_chat_update.py
+tests/test_registration_open_chat.py
 ```
 
 Preconditions:
@@ -454,7 +455,7 @@ Status: Automated with manual checkpoint
 Test file:
 
 ```bash
-tests/test_reg_empty_mess_update.py
+tests/test_empty_message.py
 ```
 
 Preconditions:
@@ -526,3 +527,44 @@ Automation notes:
 
 - The test uses scoped locators for Save buttons to avoid strict mode conflicts.
 - The test covers several profile edit sections in one logged-in flow.
+
+---
+
+## TC-012 - Logged-In User Can Purchase Incognito Subscription
+
+Priority: Medium
+
+Type: E2E sandbox payment test
+
+Status: Automated and excluded from default CI execution
+
+Test file:
+
+```bash
+tests/test_subscription.py
+```
+
+Preconditions:
+
+- User is already logged in.
+- Logged-in browser session is available.
+- Sandbox payment form is enabled.
+
+Steps:
+
+1. Open the internal search page.
+2. Open the user profile.
+3. Select the incognito subscription.
+4. Fill the sandbox card details.
+5. Confirm the payment.
+6. Check that the post-payment action is available.
+
+Expected result:
+
+- Sandbox payment is accepted.
+- `Start Exploring` is visible after confirmation.
+
+Automation notes:
+
+- The scenario is marked `payment` to prevent accidental execution on every push.
+- The final assertion verifies the visible post-payment state.

@@ -10,15 +10,15 @@
 import re
 import pytest
 from playwright.sync_api import Page, expect
+from tests.data_factory import unique_account
 
 
 @pytest.mark.no_auth
-def test_scenario_3_empty_message(page: Page):
+@pytest.mark.manual_verification
+def test_empty_message_cannot_be_sent(page: Page):
 
     # Test data for registration
-    username = "loop"
-    email = "tyisocxq4iyxb-lsdfsdf@replyloop.com"  # Change email before each test run
-    password = "21212121"
+    username, email, password = unique_account("replyloop.com")
     city = "London"
 
     page.goto("https://dashboard4.nx-sandbox.com/")
@@ -69,7 +69,6 @@ def test_scenario_3_empty_message(page: Page):
     # Verify that Browse page is opened
     expect(page).to_have_url(re.compile(r".*/#/session/search"), timeout=15000)
 
-# если что добавить просто из первого сценария try и поставить его сюда потому что такая же проблема
     # Wait until page data is fully loaded
     page.wait_for_load_state("networkidle")
 

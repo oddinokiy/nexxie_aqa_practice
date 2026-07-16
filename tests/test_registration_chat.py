@@ -1,34 +1,38 @@
-# Scenario 2
-# Verified user can open chat from Browse page
-
+# Scenario 1
 # 1. Open site
-# 2. Fill registration form
-# 3. Submit form
-# 4. Check registration success
-# 5. Open email verification chat
-# 6. Click Verify email
-# 7. Confirm email manually
-# 8. Open Browse page
-# 9. Open first user profile
-# 10. Click Chat
-# 11. Check message input is visible
+# 2. Click Register
+# 3. Fill registration form
+# 4. Submit form
+# 5. Check registration success
+# 6. Open chat
+# 7. Send message
+# 8. Check message is visible
 
-
-import re
-import pytest
 
 from playwright.sync_api import Page, expect
+import re
+import pytest
+from tests.data_factory import unique_account
 
-# понять логику кода и строчки что делают
 
 @pytest.mark.no_auth
-def test_reg_scenario_2(page:Page):
+@pytest.mark.manual_verification
+def test_registered_user_can_verify_email_and_send_message(page: Page):
+    # Registered user verifies email, opens chat with a user, and sends a message
 
-    # Test data for registration
-    username = "userok21"
-    email = "tyisocxq4iyxb-lkjjn@fivermail.com"  # Change email before each test run
-    password = "21212121"
-    city = "Cambridge"
+    # page.locator("#gender").get_by_label("Select box activate").click()
+    # page.get_by_role("link", name="a female").click()
+    # page.locator("#lookingFor").get_by_label("Select box activate").click()
+    # page.get_by_role("link", name="a male").click()
+
+    # page.locator("#country").get_by_label("Select box activate").click()
+    # page.get_by_role("link", name="Spain").click()
+
+
+    # Test data for registration and message sending
+    username, email, password = unique_account("temptami.com")
+    city = "London"
+    message = "Hi, how are u?"
 
     # Open the application
     page.goto("https://dashboard4.nx-sandbox.com/")
@@ -40,13 +44,13 @@ def test_reg_scenario_2(page:Page):
 
     # Select date of birth
     page.get_by_text("DD").click()
-    page.get_by_role("link", name="8", exact=True).click()  # exact=True means exact text match
+    page.get_by_role("link", name="7", exact=True).click()  # exact=True means exact text match
     page.get_by_text("MM").click()
-    page.get_by_role("link", name="5", exact=True).click()
+    page.get_by_role("link", name="7", exact=True).click()
     page.get_by_text("YYYY").click()
-    page.get_by_role("link", name="2005").click()
+    page.get_by_role("link", name="2007").click()
 
-    # Select city
+    # Select city from searchable dropdown
     page.locator("[name='location']").click()
     page.get_by_role("textbox", name="Select box").fill(city)
     page.get_by_role("option", name=city, exact=True).click()
@@ -71,42 +75,38 @@ def test_reg_scenario_2(page:Page):
     # Open Browse page
     page.get_by_title("Browse").click()
 
-    # Wait because after registration the app can redirect back to welcome chat
-    # тип мы можем оставаться на вкладке где ток подтвердили почту и поэтому нам нужно подождать
+    # Wait because the site can redirect user back to welcome chat after registration
     page.wait_for_timeout(3000)
 
-    # If Browse did not stay open, click Browse again
+    # If user was redirected back to chat, open Browse again
     if "search" not in page.url:
         page.get_by_title("Browse").click()
 
     # Check that Browse page is opened
     expect(page).to_have_url(re.compile(r".*/#/session/search"), timeout=15000)
+
+    # Wait until page data is fully loaded
     page.wait_for_load_state("networkidle")
-
-    # Find first user profile in Browse
-    first_profile = page.locator(".profile-details").first
-
-    # Protection against endless loading state
-    try:
-#Если Browse завис на загрузке, тест обновляет страницу и пробует открыть первого пользователя еще раз.
-        # Wait for the first user profile to appear
-        expect(first_profile).to_be_visible(timeout=7000)
-    except AssertionError:
-        # If profiles did't load, reload the page and try again
-        print("Сайт завис на трех точках! Перезагружаем...")
-        page.reload()
-        page.get_by_title("Browse").click()
-        page.wait_for_load_state("networkidle")
-
-        # Wait again after reload
-        expect(first_profile).to_be_visible(timeout=15000)
 
     # Open first user profile and start chat
+    first_profile = page.locator(".profile-details").first
+
+    # Reload once if the Browse page remains in a loading state.
+    try:
+        expect(first_profile).to_be_visible(timeout=7000)
+    except AssertionError:
+        page.reload()
+        page.get_by_title("Browse").click()
+        expect(first_profile).to_be_visible(timeout=15000)
+
     first_profile.click()
+
     page.locator('div[ng-click="context.goToChat()"]').first.click()
 
-    # Wait until chat page is loaded
-    page.wait_for_load_state("networkidle")
+    # Send message
+    page.get_by_placeholder("Your Message").fill(message)
+    page.locator(".send-btn").click()
 
-    # Check that chat message input is visible
-    expect(page.get_by_role("textbox", name="Your Message")).to_be_visible(timeout=10000)
+    # Check that sent message is visible in chat
+    chat_container = page.locator("#chat-msg-list-container")
+    expect(chat_container.get_by_text(message, exact=True)).to_be_visible(timeout=10000)

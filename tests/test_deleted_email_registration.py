@@ -12,16 +12,15 @@
 import re
 import pytest
 from playwright.sync_api import expect, Page
+from tests.data_factory import unique_account
 
 
 @pytest.mark.no_auth
-def test_register_with_deleted_email(page:Page):
+def test_deleted_email_can_be_registered_again(page: Page):
 
     # --- Test data ---
-    username_first = "user1"
-    username_second = "user2"
-    email = "tyisocxq4iyxb-moloko@getmule.com"  # Change email before each run
-    password = "12121212"
+    username_first, email, password = unique_account("getmule.com")
+    username_second = f"{username_first}b"
     city = "London"
 
     page.goto("https://dashboard4.nx-sandbox.com/")

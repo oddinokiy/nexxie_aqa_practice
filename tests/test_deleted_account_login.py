@@ -14,15 +14,14 @@
 import re
 import pytest
 from playwright.sync_api import Page, expect
+from tests.data_factory import unique_account
 
 
 @pytest.mark.no_auth
-def test_del_Scenario_2(page: Page):
+def test_deleted_user_cannot_sign_in(page: Page):
 
     # Test data
-    username = "lox11"
-    email = "tyisocxq4iyxb-adsfaf@givmail.com"  # Change email before each test run
-    password = "21212121"
+    username, email, password = unique_account("givmail.com")
     city = "Cambridge"
 
     page.goto("https://dashboard4.nx-sandbox.com/")

@@ -1,3 +1,16 @@
+.DS_Store
+.idea/
+.venv/
+venv/
+
 __pycache__/
+*.py[cod]
 .pytest_cache/
-auth/user.json
+
+allure-results/
+allure-report/
+playwright-report/
+test-results/
+
+auth/*.json
+!auth/.gitkeep

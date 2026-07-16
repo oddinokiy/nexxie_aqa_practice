@@ -1,9 +1,9 @@
-
-
+import pytest
 from playwright.sync_api import Page, expect
 
-# надо будет выбрать именно конкретный тариф, просто чтобы было понимание у них
-def test_to_get_coins(page: Page):
+
+@pytest.mark.payment
+def test_user_can_purchase_coins(page: Page):
     # The user is already logged in because conftest.py uses auth/user.json.
     page.goto("https://dashboard4.nx-sandbox.com")
 
@@ -14,8 +14,7 @@ def test_to_get_coins(page: Page):
     coin_package = page.get_by_text("Basic 300 Coins", exact=False).first
 
 
-    # Если пакет монет виден — выбрать его.
-    # Если пакет не виден — значит мы уже на странице оплаты, просто продолжаем заполнять карту.
+    # Select the package when the application has not opened the payment form yet.
 
     try:
         # If we see "Basic 300 Coins", click this package.

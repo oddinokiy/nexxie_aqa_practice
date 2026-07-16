@@ -1,128 +1,74 @@
-# 🧪 E2E Test Automation — Chat Application (Playwright)
+# Playwright E2E Test Automation
 
-This repository contains End-to-End (E2E) automated tests for a web-based chat application using **Playwright (Python)**.
+[![Playwright checks](https://github.com/oddinokiy/nexxie_aqa_practice/actions/workflows/playwright.yml/badge.svg)](https://github.com/oddinokiy/nexxie_aqa_practice/actions/workflows/playwright.yml)
 
-The goal of this test suite is to validate critical user journeys such as registration, email verification, messaging, and account deletion.
+Portfolio project with **12 end-to-end UI test scenarios** for a web-based social and chat platform. The suite covers critical user journeys, negative checks, authenticated flows, and sandbox payment scenarios.
 
----
+## What is covered
 
-# 📌 Test Coverage Overview
+| Area | Example scenarios |
+| --- | --- |
+| Authentication | Sign in, saved session, rejected login after account deletion |
+| Registration | New user registration, email verification, reuse of a deleted email |
+| Account lifecycle | Profile update, photo upload, account deletion |
+| Messaging | Open chat, send a message, prevent an empty message |
+| Sandbox payments | Purchase coins and an incognito subscription |
 
-The test suite covers **4 main business flows**:
+Detailed scenarios and expected results are documented in [docs/TEST_CASES.md](docs/TEST_CASES.md).
 
----
+## Tech stack
 
-## 🟢 1. Registration + Chat Success Flow
-
-This flow validates that a new user can successfully register, verify email, and interact in chat.
-
-**Steps:**
-- Open site
-- Register user
-- Verify email
-- Navigate to Browse page
-- Open user profile
-- Open chat
-- Send message
-- Validate message is visible
-
----
-
-## 🔴 2. Registration Negative Flows
-
-This flow ensures the system correctly handles invalid or duplicate registration attempts.
-
-**Scenarios:**
-- Register with existing email → ❌ Expected failure
-- Register with invalid or empty fields → ❌ Expected failure
-
----
-
-## 🔵 3. Delete Account Flow
-
-This flow validates account lifecycle behavior after deletion.
-
-**Steps:**
-- Register user
-- Delete account
-- Attempt login after deletion → ❌ Should fail
-- Re-register with same email → behavior depends on system rules
-
----
-
-## 🟣 4. Messaging Validation Flow
-
-This flow ensures messaging rules are enforced correctly.
-
-**Scenario:**
-- Attempt to send an empty message → ❌ Message should NOT be sent
-
----
-
-# 🧠 System Behavior Summary
-
-- Users must register and verify email before accessing chat features
-- Deleted accounts should no longer be able to log in
-- The system prevents sending empty messages
-- Duplicate or invalid registrations are rejected
-
----
-
-# 📊 Visual Representation
-
-A visual E2E flow diagram is available below:
-
-👉 (insert Mermaid diagram here or link to mermaid.live export)
-
----
-
-# 🛠 Tech Stack
-
-- Python
+- Python 3.11+
 - Playwright
-- Pytest
-- Page Object Model (POM structure recommended)
+- Pytest and pytest-playwright
+- Allure results with screenshots on failure
+- GitHub Actions
+- Page objects for reusable registration, profile, and chat actions
 
----
+## Project structure
 
-# 🔐 Saved Authentication State
+```text
+.
+├── .github/workflows/     # CI checks
+├── auth/                  # Local storage state (JSON is not committed)
+├── docs/                  # Test case documentation
+├── pages/                 # Reusable page objects
+├── tests/                 # E2E scenarios and test assets
+├── conftest.py            # Browser context and Allure screenshot hook
+├── pytest.ini             # Pytest configuration and markers
+└── requirements.txt
+```
 
-Most tests can start already logged in by using Playwright `storageState`.
+## Run locally
 
-Create the saved login state once:
+```bash
+python -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
+python -m playwright install --with-deps chromium
+pytest --collect-only -q
+```
+
+Tests marked `manual_verification` pause for email confirmation. Tests marked `payment` use sandbox card data. Both groups are excluded from the default run. To run the remaining automated scenarios:
+
+```bash
+pytest -m "not manual_verification and not payment" --alluredir=allure-results
+```
+
+## Authenticated scenarios
+
+Authenticated tests use Playwright storage state from `auth/user.json`. Create it locally:
 
 ```bash
 playwright codegen --save-storage=auth/user.json https://dashboard4.nx-sandbox.com
 ```
 
-In the opened browser, log in manually with an existing user account, then close the browser.
+The file can contain cookies and session data, so it is excluded from Git. CI reads the state from the `AUTH_USER_JSON` repository secret. Existing-user credentials are read from `NX_TEST_USERNAME` and `NX_TEST_PASSWORD`; they are never stored in the repository.
 
-After that, normal tests that use the `page` fixture will start with this authenticated session.
+## CI
 
-Important:
-- Do not put login or registration steps into tests that only check internal pages.
-- Keep registration, sign-in, and delete-account tests marked with `@pytest.mark.no_auth`, because those scenarios need a clean public session.
-- `auth/user.json` is ignored by Git because it contains private session data.
+Every push to `main` installs the dependencies, executes the default non-manual and non-payment scenarios, and uploads Allure results as a workflow artifact. The workflow can also be started manually from GitHub Actions.
 
----
+## Author
 
-# 🎯 Purpose of this Project
-
-This project demonstrates:
-
-- E2E automation design skills
-- Real user journey validation
-- QA system thinking (not just test scripting)
-- Ability to translate test cases into business logic
-
----
-
-# 📌 Notes
-
-- All tests are designed to simulate real user behavior
-- Some scenarios are expected failures (negative testing)
-- Focus is on system reliability and user flow correctness
-
----
-
-
+[Nikita Sharoiko-Shakhrai](https://www.linkedin.com/in/nikita-sharoiko-shakhrai-543aba267/) — QA Engineer focused on Python test automation.
