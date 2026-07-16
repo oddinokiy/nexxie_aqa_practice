@@ -125,6 +125,4 @@ This project demonstrates:
 
 ---
 
-# 🚀 Author
 
-QA Automation Engineer (Intern)
