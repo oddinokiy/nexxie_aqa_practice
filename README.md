@@ -1,6 +1,6 @@
 # Playwright E2E Test Automation
 
-[![Playwright checks](https://github.com/oddinokiy/nexxie_aqa_practice/actions/workflows/playwright.yml/badge.svg)](https://github.com/oddinokiy/nexxie_aqa_practice/actions/workflows/playwright.yml)
+[![Portfolio checks](https://github.com/oddinokiy/nexxie_aqa_practice/actions/workflows/playwright.yml/badge.svg)](https://github.com/oddinokiy/nexxie_aqa_practice/actions/workflows/playwright.yml)
 
 Portfolio project with **12 end-to-end UI test scenarios** for a web-based social and chat platform. The suite covers critical user journeys, negative checks, authenticated flows, and sandbox payment scenarios.
 
@@ -67,7 +67,13 @@ The file can contain cookies and session data, so it is excluded from Git. CI re
 
 ## CI
 
-Every push to `main` installs the dependencies, executes the default non-manual and non-payment scenarios, and uploads Allure results as a workflow artifact. The workflow can also be started manually from GitHub Actions.
+Every push and pull request installs the pinned dependencies, verifies that the complete Pytest suite can be collected, runs stable unit checks, and uploads Allure results as a workflow artifact. The browser scenarios exercise a live external sandbox and require current test accounts, authentication state, and application data, so they are intentionally not presented as deterministic CI checks.
+
+Run the live scenarios locally after creating `auth/user.json` and supplying the environment variables documented above:
+
+```bash
+pytest -m "not manual_verification and not payment"
+```
 
 ## Author
 

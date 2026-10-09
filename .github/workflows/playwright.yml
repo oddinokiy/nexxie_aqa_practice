@@ -1,41 +1,37 @@
-name: Playwright Tests
+name: Portfolio Checks
 
 on:
   push:
     branches: [ main ]
+  pull_request:
   workflow_dispatch:
 
 jobs:
-  run-tests:
+  validate-suite:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Скачиваем код из репозитория
+    - name: Check out repository
       uses: actions/checkout@v4
 
-    - name: Устанавливаем Python
+    - name: Set up Python
       uses: actions/setup-python@v5
       with:
         python-version: '3.11'
+        cache: pip
 
-    - name: Устанавливаем библиотеки из requirements.txt
+    - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements.txt
+        python -m pip install -r requirements.txt
 
-    - name: Устанавливаем браузеры Playwright
-      run: python -m playwright install --with-deps
+    - name: Verify test collection
+      run: pytest --collect-only -q
 
-    - name: Создаем папку auth
-      run: mkdir -p auth
+    - name: Run stable unit checks
+      run: pytest tests/test_data_factory_unit.py --alluredir=allure-results
 
-    - name: Восстанавливаем auth/user.json из Секретов Гитхаба
-      run: echo '${{ secrets.AUTH_USER_JSON }}' > auth/user.json
-
-    - name: Запускаем наши тесты
-      run: pytest
-
-    - name: Сохраняем Allure отчеты на Гитхаб
+    - name: Upload Allure results
       if: always()
       uses: actions/upload-artifact@v4
       with:
